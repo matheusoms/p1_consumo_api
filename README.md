@@ -10,26 +10,16 @@
   5. Tratar os dados para trazer informações concisas e com nexo.
 ```
 
-## A API que irei utilizar para este projeto é: Weatherstack API
+## A API que irei utilizar para este projeto é: OpenData do Sistema Solar
 
-Com ela poderemos realizar consultas de diferentes condições climáticas de diversos locais. Como por exemplo:
-
-Retornando clima de São Paulo-SP:
-
-```
-"Nome da Cidade: São Paulo
-País: Brazil
-Hora Local: 2019-09-07 08:14
-Temperatura Atual: 24
-Descrição do Clima: Ensolarado
-Humidade: 15
-Visibilidade: 12"
+O objetivo desta consulta é simular o cálculo do movimento de translação de um corpo celeste em relação ao Sol em anos luz.
+Baseando no conceito da Terceira Lei de Kepler onde o tamanho do seu semiexio é proporcional ao período de translação em torno do Sol.
 
 ```
-
-Para acessar a página da API basta clicar em [Weatherstack](https://weatherstack.com/).
-Para acessar a documentação da API acesse [Documentação WeatherStack](https://weatherstack.com/documentation).
-
+Um exemplo do que podemos ter de retorno é o calculo do período de translação da Lua, 
+baseando em seu semieixo maior, demoraria 0.0000001341 dias para completar o movimento.
+```
+Para acessar a documentação da API acesse [Documentação OpenData do Sistema Solar](https://api.le-systeme-solaire.net/).
 
 # Seguem as instruções de como utilizar o código:
 
