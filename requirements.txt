@@ -1,3 +1,4 @@
 python = 3.11.4
 requests = 2.28.2
 git = 2.42.0.windows.2 or linux version updated
+venv = 3.3

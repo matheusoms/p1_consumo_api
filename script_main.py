@@ -1,61 +1,52 @@
 import requests
 
 class Planeta:
-    def __init__(self, nome, distancia_media):
+    def __init__(self, nome, distancia_media_km):
         self.nome = nome
-        self.distancia_media = distancia_media
+        self.distancia_media_km = distancia_media_km
 
     def calcular_distancia_em_dias(self):
         try:
-            distancia_km = float(
-                self.distancia_media) * 149597870.7  # 1 UA = 149.597.870,7 km
-            velocidade_luz_km_dia = 299792458 / 86400
-            distancia_dias = distancia_km / velocidade_luz_km_dia / 365
+            velocidade_luz_km_por_dia = 299792.458 * 86400  # velocidade da luz em km/dia
+            distancia_dias = self.distancia_media_km / velocidade_luz_km_por_dia
             return distancia_dias
         except ValueError:
-            print(
-                "Erro: a distância média deve ser um número com separador decimal ',' ou '.'")
+            print("Erro: a distância média deve ser um número.")
             return None
-
-
+        
 url = "https://api.le-systeme-solaire.net/rest/bodies/"
 
 response = requests.get(url)
 
 if response.status_code == 200:
     data = response.json()
-    planetas = []
-    for planeta in data["bodies"]:
-        if "semimajorAxis" in planeta:
-            planetas.append(
-                Planeta(planeta["name"], planeta["semimajorAxis"]))
+    planetas_dict = {}
+    for planeta_data in data["bodies"]:
+        if "meanRadius" in planeta_data:  # Vamos usar o raio médio já que a API retorna a distância em km
+            distancia_media_km = planeta_data["meanRadius"] * 2
+            planeta = Planeta(planeta_data["englishName"], distancia_media_km)
+            planetas_dict[planeta_data["englishName"].lower()] = planeta
         else:
-            print(
-                f"A distância média para {planeta['name']} não está disponível.")
-    print("Lista de planetas:")
-    for planeta in planetas:
-        print(planeta.nome)
-    while True:
-        escolha = input(
-            "Digite o nome de um planeta (ou 'sair' para encerrar o programa): ")
-        if escolha.lower() == "sair":
-            break
-        planeta_encontrado = False
-        for planeta in planetas:
-            if escolha.lower() == planeta.nome.lower():
-                distancia_dias = planeta.calcular_distancia_em_dias()
-                if distancia_dias is not None:
-                    print(
-                        f"Distância da Terra para {planeta.nome}: {distancia_dias:.2f} dias")
-                planeta_encontrado = True
-                break
-        if not planeta_encontrado:
-            print("Planeta não encontrado")
-else:
-    print("Erro ao acessar a API")
+            print(f"A distância média para {planeta_data['englishName']} não está disponível.")
 
-print("Opções de planetas:")
-for i, planeta in enumerate(data["bodies"]):
-    if "name" in planeta:
-        print(f"{i+1}. {planeta['name']}")
-print()
+    print("Opções de planetas e corpos celestes:")
+    for nome in planetas_dict.keys():
+        print(nome)
+    print()
+
+    while True:
+        escolha = input("Digite o nome de um planeta (ou 'sair' para encerrar o programa): ").lower()
+        if escolha == "sair":
+            break
+        elif escolha in planetas_dict:
+            distancia_dias = planetas_dict[escolha].calcular_distancia_em_dias()
+            if distancia_dias is not None:
+                print(f"O movimento de translação da {escolha.capitalize()} em volta do sol dura: {distancia_dias:.10f} dias")
+        else:
+            print("Planeta ou corpo celeste não encontrado")
+
+elif response.status_code == 404:
+    print(f"API Not Found. Código de Status: {response.status_code}")
+
+else:
+    print(f"Erro ao acessar a API. Código de Status: {response.status_code}")
