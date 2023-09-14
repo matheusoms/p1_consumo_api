@@ -13,7 +13,7 @@
 ## A API que irei utilizar para este projeto é: OpenData do Sistema Solar
 
 O objetivo desta consulta é simular o cálculo do movimento de translação de um corpo celeste em relação ao Sol em anos luz.
-Baseando no conceito da Terceira Lei de Kepler onde o tamanho do seu semiexio é proporcional ao período de translação em torno do Sol.
+Baseando no conceito da Terceira Lei de Kepler onde o dobro do tamanho do seu semi-eixo é proporcional ao período de translação em torno do Sol.
 
 ```
 Um exemplo do que podemos ter de retorno é o calculo do período de translação da Lua, 
